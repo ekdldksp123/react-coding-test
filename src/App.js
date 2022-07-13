@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { style } from './App.style';
 import { usePhoneBookState } from './Context';
 
@@ -16,8 +16,13 @@ function PhoneBookForm() {
     setInfoState({...infoState, [e.target.name]: e.target.value})
   }
 
+  const onSubmitHandler = (e) => {
+    e.preventDefault() //(*) submit 시에 페이지 리로딩을 막아주고 데이터가 유지됨!!!
+    addInfo({...infoState})
+  }
+
   return (
-    <form onSubmit={(e) => addInfo({...infoState}) } style={style.form.container}>
+    <form onSubmit={(e) => onSubmitHandler(e)} style={style.form.container}>
       <label>First name:</label>
       <br />
       <input 
@@ -64,10 +69,6 @@ function PhoneBookForm() {
 function InformationTable() {
 
   const {phonebook} = usePhoneBookState()
-
-  useEffect(() => {
-    console.dir(phonebook)
-  },[phonebook])
 
   const showTbody = phonebook.length > 0 ? phonebook.map((v,i) => {
     return (
