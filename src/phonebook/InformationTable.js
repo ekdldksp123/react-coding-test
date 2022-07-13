@@ -1,5 +1,5 @@
 import { style } from "../App.style";
-import { usePhoneBookState } from "../Context";
+import { usePhoneBookState } from "../hook/Context";
 
 export default function InformationTable() {
 
