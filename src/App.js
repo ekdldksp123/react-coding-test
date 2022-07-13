@@ -1,4 +1,5 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useState } from 'react';
+import { PhonebookProvider } from './Context';
 
 const style = {
   table: {
@@ -33,11 +34,9 @@ const style = {
   }
 }
 
-
 function PhoneBookForm({ infoState, setInfoState, addEntryToPhoneBook }) {
   
   const onChangeHandler = (e) => {
-    console.dir(infoState)
     setInfoState({...infoState, [e.target.name]: e.target.value})
   }
 
@@ -88,17 +87,15 @@ function PhoneBookForm({ infoState, setInfoState, addEntryToPhoneBook }) {
 
 function InformationTable({infoArray}) {
 
-  const showTbody = useMemo(() => {
-    return infoArray.length > 0 ? infoArray.map((v,i) => {
-          return (
-            <tr key={`tr-${i}`}>
-              <td>{v.userFirstname}</td>
-              <td>{v.userLastname}</td>
-              <td>{v.userPhone}</td>
-            </tr>
-          )}
-        ) : <></>
-  }, [infoArray])
+  const showTbody = infoArray.length > 0 ? infoArray.map((v,i) => {
+    return (
+      <tr key={`tr-${i}`}>
+        <td>{v.userFirstname}</td>
+        <td>{v.userLastname}</td>
+        <td>{v.userPhone}</td>
+      </tr>
+    )}
+  ) : <></>
 
   return (
     <table style={style.table} className='informationTable'>
@@ -124,25 +121,24 @@ function App() {
     userPhone: '8885559999'
   })
 
-  const addEntryToPhoneBook = useCallback(() => {
+  const addEntryToPhoneBook = () => {
 
     setInfoArray([...infoArray, {
       userFirstname: infoState.userFirstname,
       userLastname: infoState.userLastname,
       userPhone: infoState.userPhone
     }])
-  },[infoArray])
+  }
 
-console.dir(infoArray)
   return (
-    <section>
+    <PhonebookProvider>
       <PhoneBookForm 
         infoState={infoState} 
         setInfoState={setInfoState} 
         addEntryToPhoneBook={addEntryToPhoneBook}
       />
       <InformationTable infoArray={infoArray} />
-    </section>
+    </PhonebookProvider>
   );
 
 }
