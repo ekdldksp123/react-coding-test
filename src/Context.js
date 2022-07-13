@@ -1,33 +1,27 @@
-import React, { createContext, useContext, useReducer } from 'react';
-
-const initialPhonebook = [];
-
-function phonebookReducer(state, action) {
-    switch (action.type) {
-        case 'CREATE': 
-            return state.concat(action.phonebook)
-        default: throw new Error(`Unhandled action type: ${action.type}`)
-    }
-}
+import React, { createContext, useContext, useState } from 'react';
 
 const PhonebookContext = createContext();
-const PhonebookDispatchContext = createContext();
 
 export function PhonebookProvider({children}){
-    const [state, dispatch] = useReducer(phonebookReducer, initialPhonebook);
+    const [phonebook, setPhonebook] = useState([])
+
+    const addInfo = info => setPhonebook([
+        ...phonebook, {
+            userFirstname: info.userFirstname,
+            userLastname: info.userLastname,
+            userPhone: info.userPhone
+        }
+    ])
+
     return (
-        <PhonebookContext.Provider value={state}>
-            <PhonebookDispatchContext.Provider value={dispatch}>
-                {children}
-            </PhonebookDispatchContext.Provider>
+        <PhonebookContext.Provider value={{phonebook, setPhonebook, addInfo}}>
+            {children}
         </PhonebookContext.Provider>
     );
 }
 
 export function usePhoneBookState() {
-    return useContext(PhonebookContext)
-}
-
-export function usePhoneBookDispatch() {
-    return useContext(PhonebookDispatchContext)
+    const context = useContext(PhonebookContext)
+    if(!context) throw new Error('Cannot find PhonebookContext')
+    return context
 }

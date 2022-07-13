@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { PhonebookProvider } from './Context';
+import { PhonebookProvider, usePhoneBookState } from './Context';
 
 const style = {
   table: {
@@ -34,7 +34,12 @@ const style = {
   }
 }
 
-function PhoneBookForm({ infoState, setInfoState, addEntryToPhoneBook }) {
+function PhoneBookForm({ addEntryToPhoneBook }) {
+  const [infoState, setInfoState] = useState({
+    userFirstname: 'Coder',
+    userLastname: 'Byte',
+    userPhone: '8885559999'
+  })
   
   const onChangeHandler = (e) => {
     setInfoState({...infoState, [e.target.name]: e.target.value})
@@ -85,7 +90,9 @@ function PhoneBookForm({ infoState, setInfoState, addEntryToPhoneBook }) {
   )
 }
 
-function InformationTable({infoArray}) {
+function InformationTable() {
+
+  const infoArray = usePhoneBookState()
 
   const showTbody = infoArray.length > 0 ? infoArray.map((v,i) => {
     return (
