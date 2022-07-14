@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { style } from "../App.style";
 import { usePhoneBookState } from "../hook/Context";
 
@@ -12,9 +12,9 @@ export default function PhoneBookForm() {
       userPhone: '8885559999'
     })
     
-    const onChangeHandler = (e) => {
-      setInfoState({...infoState, [e.target.name]: e.target.value})
-    }
+    const OnChangeHandler = useCallback((e) => {
+        setInfoState({...infoState, [e.target.name]: e.target.value})
+    }, [infoState])
   
     const onSubmitHandler = (e) => {
       e.preventDefault() //(*) submit 시에 페이지 리로딩을 막아주고 데이터가 유지됨!!!
@@ -31,7 +31,7 @@ export default function PhoneBookForm() {
           name='userFirstname' 
           type='text'
           value={infoState.userFirstname}
-          onChange={(e) => onChangeHandler(e)}
+          onChange={(e) => OnChangeHandler(e)}
         />
         <br/>
         <label>Last name:</label>
@@ -42,7 +42,7 @@ export default function PhoneBookForm() {
           name='userLastname' 
           type='text' 
           value={infoState.userLastname}
-          onChange={(e) => onChangeHandler(e)}
+          onChange={(e) => OnChangeHandler(e)}
         />
         <br />
         <label>Phone:</label>
@@ -53,7 +53,7 @@ export default function PhoneBookForm() {
           name='userPhone' 
           type='text'
           value={infoState.userPhone}
-          onChange={(e) => onChangeHandler(e)}
+          onChange={(e) => OnChangeHandler(e)}
         />
         <br/>
         <input 

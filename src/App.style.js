@@ -1,4 +1,7 @@
 export const style = {
+    button: {
+      marginLeft: '50px'
+    },
     table: {
       borderCollapse: 'collapse'
     },
